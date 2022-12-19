@@ -22,8 +22,13 @@ class H2Adapter(
             .map { todoJpa -> todoMapper.todoJpaToTodoDomain(todoJpa) }
     }
 
-    override fun deleteAllTodo() {
-        repository.deleteAll()
+    override fun deleteAllTodo(completed: Boolean?) {
+        if (completed == null) {
+            repository.deleteAll()
+        } else {
+            repository.deleteAllByCompletedIsTrue()
+        }
+
     }
 
 }

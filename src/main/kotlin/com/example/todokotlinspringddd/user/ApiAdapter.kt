@@ -7,13 +7,16 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
+@RequestMapping("/todos")
 class ApiAdapter(private val todoManagement: TodoService) {
 
-    @PostMapping("/todos")
+    @PostMapping
     fun createTodo(@RequestBody request: TodoCreationRequest): ResponseEntity<*> {
         val todo = todoManagement.saveTodo(request)
 
@@ -21,7 +24,7 @@ class ApiAdapter(private val todoManagement: TodoService) {
         return ResponseEntity(todoResponse, HttpStatus.CREATED)
     }
 
-    @GetMapping("/todos")
+    @GetMapping
     fun getAllTodo(): ResponseEntity<List<TodoResponse>> {
         val todos = todoManagement.getAllTodos()
 
@@ -29,10 +32,14 @@ class ApiAdapter(private val todoManagement: TodoService) {
         return ResponseEntity.ok(todoResponses)
     }
 
-    @DeleteMapping("/todos")
-    fun deleteAllTodo(): ResponseEntity<Nothing> {
-        todoManagement.deleteTodos()
-
+    @DeleteMapping
+    fun deleteAllTodo(
+        @PathVariable(
+            required = false,
+            name = "completed"
+        ) completed: Boolean?
+    ): ResponseEntity<Nothing> {
+        todoManagement.deleteTodos(completed)
         return ResponseEntity(null, HttpStatus.NO_CONTENT)
     }
 }
