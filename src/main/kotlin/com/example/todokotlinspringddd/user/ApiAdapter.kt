@@ -1,6 +1,5 @@
 package com.example.todokotlinspringddd.user
 
-import com.example.todokotlinspringddd.domain.Todo
 import com.example.todokotlinspringddd.domain.TodoCreationRequest
 import com.example.todokotlinspringddd.domain.TodoService
 import org.springframework.http.ResponseEntity
@@ -9,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 
-@Controller()
-class TodoController(private val todoManagement: TodoService) {
+@Controller
+class ApiAdapter(private val todoManagement: TodoService) {
 
     @PostMapping("/todos")
     fun createTodo(@RequestBody request: TodoCreationRequest): ResponseEntity<*> {

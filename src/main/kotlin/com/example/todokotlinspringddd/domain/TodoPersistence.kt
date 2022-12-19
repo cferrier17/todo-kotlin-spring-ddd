@@ -1,7 +1,7 @@
 package com.example.todokotlinspringddd.domain
 
 interface TodoPersistence {
-    fun saveTodo(todo: Todo): Todo
+    fun saveTodo(todoDomain : TodoDomain): TodoDomain
 
-    fun getAllTodo(): List<Todo>
+    fun getAllTodo(): List<TodoDomain>
 }

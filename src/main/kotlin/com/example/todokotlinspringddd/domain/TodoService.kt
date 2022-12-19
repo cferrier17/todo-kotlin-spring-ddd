@@ -1,17 +1,15 @@
 package com.example.todokotlinspringddd.domain
 
-import org.springframework.stereotype.Service
 import java.util.*
 
-@Service
 class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement {
     var rank = 0
 
-    override fun saveTodo(request: TodoCreationRequest): Todo {
+    override fun saveTodo(request: TodoCreationRequest): TodoDomain {
         rank++
 
         return todoPersistence.saveTodo(
-            Todo(
+            TodoDomain(
                 id = UUID.randomUUID().toString(),
                 title = request.title,
                 completed = false,
@@ -20,9 +18,9 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
         )
     }
 
-    override fun getAllTodos(): List<Todo> {
+    override fun getAllTodos(): List<TodoDomain> {
         return todoPersistence.getAllTodo()
-            .sortedBy(Todo::rank)
+            .sortedBy(TodoDomain::rank)
     }
 
     override fun deleteTodos(completed: Boolean?) {

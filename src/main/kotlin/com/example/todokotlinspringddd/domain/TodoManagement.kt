@@ -1,9 +1,9 @@
 package com.example.todokotlinspringddd.domain
 
 interface TodoManagement {
-    fun saveTodo(request: TodoCreationRequest): Todo
+    fun saveTodo(request: TodoCreationRequest): TodoDomain
 
-    fun getAllTodos(): List<Todo>
+    fun getAllTodos(): List<TodoDomain>
 
     fun deleteTodos(completed: Boolean?)
 
