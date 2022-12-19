@@ -10,4 +10,8 @@ class TodoH2Service(private val repository: TodoRepository) : TodoPersistence {
         return repository.save(todo)
     }
 
+    override fun getAllTodo(): List<Todo> {
+        return repository.findAll() as List<Todo>;
+    }
+
 }
