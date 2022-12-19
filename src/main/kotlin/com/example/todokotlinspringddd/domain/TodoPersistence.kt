@@ -4,4 +4,6 @@ interface TodoPersistence {
     fun saveTodo(todoDomain : TodoDomain): TodoDomain
 
     fun getAllTodo(): List<TodoDomain>
+
+    fun deleteAllTodo()
 }

@@ -22,4 +22,8 @@ class H2Adapter(
             .map { todoJpa -> todoMapper.todoJpaToTodoDomain(todoJpa) }
     }
 
+    override fun deleteAllTodo() {
+        repository.deleteAll()
+    }
+
 }

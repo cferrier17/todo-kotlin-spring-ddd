@@ -24,7 +24,7 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
     }
 
     override fun deleteTodos(completed: Boolean?) {
-        TODO("Not yet implemented")
+        todoPersistence.deleteAllTodo()
     }
 
     override fun deleteTodo(id: String) {
