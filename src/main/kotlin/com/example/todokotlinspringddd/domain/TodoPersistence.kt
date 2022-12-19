@@ -5,5 +5,5 @@ interface TodoPersistence {
 
     fun getAllTodo(): List<TodoDomain>
 
-    fun deleteAllTodo()
+    fun deleteAllTodo(completed : Boolean?)
 }
