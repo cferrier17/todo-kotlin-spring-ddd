@@ -1,7 +1,9 @@
 package com.example.todokotlinspringddd.user
 
 import com.example.todokotlinspringddd.domain.TodoCreationRequest
+import com.example.todokotlinspringddd.domain.TodoDomain
 import com.example.todokotlinspringddd.domain.TodoService
+import org.apache.coyote.Response
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -41,5 +43,17 @@ class ApiAdapter(private val todoManagement: TodoService) {
     ): ResponseEntity<Nothing> {
         todoManagement.deleteTodos(completed)
         return ResponseEntity(null, HttpStatus.NO_CONTENT)
+    }
+
+    @GetMapping("/{id}")
+    fun getTodo(@PathVariable(name = "id") id: String): ResponseEntity<TodoResponse> {
+        val todo = todoManagement.getTodo(id)
+
+        return if (todo?.isPresent == true) {
+            val todoResponse = TodoResponse(todo.get())
+            ResponseEntity.ok(todoResponse)
+        } else {
+            ResponseEntity.notFound().build();
+        }
     }
 }
