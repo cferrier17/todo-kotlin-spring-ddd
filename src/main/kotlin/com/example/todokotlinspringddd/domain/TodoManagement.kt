@@ -11,10 +11,12 @@ interface TodoManagement {
 
     fun deleteTodo(id: String)
 
-    fun getTodo(id: String) : Optional<TodoDomain>?
+    fun getTodo(id: String): Optional<TodoDomain>?
 
     fun partialUpdateTodo(request: TodoPartialUpdateRequest)
 
-    fun fullUpdateTodo(request: TodoUpdateRequest)
+    fun fullUpdateTodo(id: String, request: TodoUpdateRequest): TodoDomain
 
+    fun isUpdatable(id: String, rank: Int): Pair<Boolean, Boolean>
+//    fun partialUpdateTodo(id: String, request: TodoPartialUpdateRequest): TodoDomain
 }

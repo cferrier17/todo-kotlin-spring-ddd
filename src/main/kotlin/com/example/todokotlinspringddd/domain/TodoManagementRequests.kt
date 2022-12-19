@@ -11,11 +11,11 @@ class TodoCreationRequest(
 class TodoUpdateRequest(
     var title: String,
     var completed: Boolean,
-    var order: Int
+    var rank: Int
 )
 
 class TodoPartialUpdateRequest(
-    var title: String,
-    var completed: Boolean,
-    var order: Int
+    var title: String?,
+    var completed: Boolean?,
+    var rank: Int?
 )
