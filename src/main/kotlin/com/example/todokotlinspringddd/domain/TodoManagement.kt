@@ -5,7 +5,7 @@ interface TodoManagement {
 
     fun getAllTodos(): List<TodoDomain>
 
-    fun deleteTodos(completed: Boolean?)
+    fun deleteTodos(completed: Boolean? = null)
 
     fun deleteTodo(id: String)
 
