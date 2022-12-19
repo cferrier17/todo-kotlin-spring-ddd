@@ -3,7 +3,7 @@ package com.example.todokotlinspringddd.domain
 interface TodoManagement {
     fun saveTodo(request: TodoCreationRequest): Todo
 
-    fun getAllTodos()
+    fun getAllTodos(): List<Todo>
 
     fun deleteTodos(completed: Boolean?)
 

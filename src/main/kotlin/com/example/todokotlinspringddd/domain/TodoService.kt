@@ -5,17 +5,24 @@ import java.util.*
 
 @Service
 class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement {
+    var rank = 0
+
     override fun saveTodo(request: TodoCreationRequest): Todo {
-        return todoPersistence.saveTodo(Todo(
-            id = UUID.randomUUID().toString(),
-            title = request.title,
-            completed = false,
-            rank = 1
-        ))
+        rank++
+
+        return todoPersistence.saveTodo(
+            Todo(
+                id = UUID.randomUUID().toString(),
+                title = request.title,
+                completed = false,
+                rank = rank
+            )
+        )
     }
 
-    override fun getAllTodos() {
-        TODO("Not yet implemented")
+    override fun getAllTodos(): List<Todo> {
+        return todoPersistence.getAllTodo()
+            .sortedBy(Todo::rank)
     }
 
     override fun deleteTodos(completed: Boolean?) {
