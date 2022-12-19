@@ -1,5 +1,7 @@
 package com.example.todokotlinspringddd.domain
 
+import java.util.*
+
 interface TodoManagement {
     fun saveTodo(request: TodoCreationRequest): TodoDomain
 
@@ -9,7 +11,7 @@ interface TodoManagement {
 
     fun deleteTodo(id: String)
 
-    fun getTodo(id: String)
+    fun getTodo(id: String) : Optional<TodoDomain>?
 
     fun partialUpdateTodo(request: TodoPartialUpdateRequest)
 

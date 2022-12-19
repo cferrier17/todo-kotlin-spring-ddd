@@ -31,8 +31,8 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
         TODO("Not yet implemented")
     }
 
-    override fun getTodo(id: String) {
-        TODO("Not yet implemented")
+    override fun getTodo(id: String) : Optional<TodoDomain>? {
+        return todoPersistence.findTodo(id)
     }
 
     override fun partialUpdateTodo(request: TodoPartialUpdateRequest) {

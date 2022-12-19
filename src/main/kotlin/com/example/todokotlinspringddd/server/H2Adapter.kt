@@ -3,6 +3,7 @@ package com.example.todokotlinspringddd.server
 import com.example.todokotlinspringddd.domain.TodoDomain
 import com.example.todokotlinspringddd.domain.TodoPersistence
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class H2Adapter(
@@ -29,6 +30,10 @@ class H2Adapter(
             repository.deleteAllByCompletedIsTrue()
         }
 
+    }
+
+    override fun findTodo(id: String): Optional<TodoDomain>? {
+        return repository.findById(id).map { todoJpa -> todoMapper.todoJpaToTodoDomain(todoJpa) }
     }
 
 }
