@@ -1,6 +1,7 @@
 package com.example.todokotlinspringddd.user
 
 import com.example.todokotlinspringddd.domain.TodoDomain
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 class TodoResponse(
     var id: String? = null,
@@ -10,5 +11,16 @@ class TodoResponse(
     var url: String
 ) {
 
-    constructor(todo: TodoDomain) : this(todo.id, todo.title, todo.completed, todo.rank, "url")
+
+    constructor(todo: TodoDomain) : this(
+        id = todo.id,
+        title = todo.title,
+        completed = todo.completed,
+        order = todo.rank,
+        url = String.format(
+            "%s/todos/%s",
+            ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString(),
+            todo.id
+        )
+    )
 }
