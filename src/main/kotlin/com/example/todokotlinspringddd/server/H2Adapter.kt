@@ -48,4 +48,8 @@ class H2Adapter(
         return repository.existsByRank(rank)
     }
 
+    override fun deleteById(id: String) {
+        return repository.deleteById(id)
+    }
+
 }

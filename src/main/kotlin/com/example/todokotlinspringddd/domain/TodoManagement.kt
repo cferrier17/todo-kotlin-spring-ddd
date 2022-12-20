@@ -19,4 +19,5 @@ interface TodoManagement {
 
     fun isUpdatable(id: String, rank: Int): Pair<Boolean, Boolean>
 //    fun partialUpdateTodo(id: String, request: TodoPartialUpdateRequest): TodoDomain
+    fun todoExists(id: String): Boolean
 }

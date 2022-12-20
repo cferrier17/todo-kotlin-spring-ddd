@@ -28,7 +28,7 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
     }
 
     override fun deleteTodo(id: String) {
-        TODO("Not yet implemented")
+        return todoPersistence.deleteById(id)
     }
 
     override fun getTodo(id: String): Optional<TodoDomain>? {
@@ -61,8 +61,12 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
 //        ))
 //    }
 
+    override fun todoExists(id: String): Boolean {
+        return todoPersistence.todoExists(id)
+    }
+
     override fun isUpdatable(id: String, rank: Int): Pair<Boolean, Boolean> {
-        val todoExists = todoPersistence.todoExists(id)
+        val todoExists = todoExists(id)
         val rankExists = !todoPersistence.rankExists(rank)
 
         return Pair(todoExists, rankExists)

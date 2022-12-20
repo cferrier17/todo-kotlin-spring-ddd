@@ -16,4 +16,5 @@ interface TodoPersistence {
     fun todoExists(id: String) : Boolean
 
     fun rankExists(rank: Int) : Boolean
+    fun deleteById(id: String)
 }

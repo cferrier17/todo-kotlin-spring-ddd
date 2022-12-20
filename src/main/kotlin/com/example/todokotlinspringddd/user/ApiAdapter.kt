@@ -90,4 +90,14 @@ class ApiAdapter(private val todoManagement: TodoService) {
 //        val response = TodoResponse(todo)
 //        return ResponseEntity.ok(response)
 //    }
+
+    @DeleteMapping("/{id}")
+    fun deleteTodoById(@PathVariable(name = "id") id: String): ResponseEntity<Nothing> {
+        if (todoManagement.todoExists(id)) {
+            todoManagement.deleteTodo(id)
+            return ResponseEntity(null, HttpStatus.NO_CONTENT)
+        }
+
+        return ResponseEntity.notFound().build()
+    }
 }
