@@ -6,3 +6,10 @@ class TodoDomain(
     var completed: Boolean,
     var rank: Int
 )
+
+class TodoDomainNullable(
+    var id: String,
+    var title: String?,
+    var completed: Boolean?,
+    var rank: Int?
+)

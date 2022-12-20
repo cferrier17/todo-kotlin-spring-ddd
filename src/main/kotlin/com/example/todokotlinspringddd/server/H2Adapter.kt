@@ -1,6 +1,7 @@
 package com.example.todokotlinspringddd.server
 
 import com.example.todokotlinspringddd.domain.TodoDomain
+import com.example.todokotlinspringddd.domain.TodoDomainNullable
 import com.example.todokotlinspringddd.domain.TodoPersistence
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,6 +19,30 @@ class H2Adapter(
         return todoMapper.todoJpaToTodoDomain(savedJpa)
     }
 
+    override fun saveTodo(todoDomain: TodoDomainNullable): TodoDomain? {
+        val todoInBase = findTodo(todoDomain.id)
+
+        if (todoInBase.isPresent) {
+            var todo = todoInBase.get()
+
+            if (todoDomain.title != null) {
+                todo.title = todoDomain.title!!
+            }
+
+            if (todoDomain.completed != null) {
+                todo.completed = todoDomain.completed!!
+            }
+
+            if (todoDomain.rank != null) {
+                todo.rank = todoDomain.rank!!
+            }
+
+            return saveTodo(todo)
+        }
+
+        return null
+    }
+
     override fun getAllTodo(): List<TodoDomain> {
         return repository.findAll()
             .map { todoJpa -> todoMapper.todoJpaToTodoDomain(todoJpa) }
@@ -32,7 +57,7 @@ class H2Adapter(
 
     }
 
-    override fun findTodo(id: String): Optional<TodoDomain>? {
+    override fun findTodo(id: String): Optional<TodoDomain> {
         return repository.findById(id).map { todoJpa -> todoMapper.todoJpaToTodoDomain(todoJpa) }
     }
 
@@ -44,8 +69,8 @@ class H2Adapter(
         return repository.existsById(id)
     }
 
-    override fun rankExists(rank: Int): Boolean {
-        return repository.existsByRank(rank)
+    override fun rankIsFree(rank: Int): Boolean {
+        return !repository.existsByRank(rank)
     }
 
     override fun deleteById(id: String) {

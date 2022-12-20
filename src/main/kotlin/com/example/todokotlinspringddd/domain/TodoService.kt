@@ -35,10 +35,6 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
         return todoPersistence.findTodo(id)
     }
 
-    override fun partialUpdateTodo(request: TodoPartialUpdateRequest) {
-        TODO("Not yet implemented")
-    }
-
     override fun fullUpdateTodo(id: String, request: TodoUpdateRequest): TodoDomain {
         return todoPersistence.saveTodo(
             TodoDomain(
@@ -50,26 +46,31 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
         )
     }
 
-//    override fun partialUpdateTodo(id: String, request: TodoPartialUpdateRequest) : TodoDomain{
-//
-//
-//        return todoPersistence.saveTodo(TodoDomain(
-//            id = id,
-//            title = request.title,
-//            completed = request.completed,
-//            rank = request.order
-//        ))
-//    }
+    override fun partialUpdateTodo(id: String, request: TodoPartialUpdateRequest): TodoDomain? {
+        return todoPersistence.saveTodo(
+            TodoDomainNullable(
+                id = id,
+                title = request.title,
+                completed = request.completed,
+                rank = request.rank
+            )
+        )
+    }
 
     override fun todoExists(id: String): Boolean {
         return todoPersistence.todoExists(id)
     }
 
-    override fun isUpdatable(id: String, rank: Int): Pair<Boolean, Boolean> {
+    override fun isUpdatable(id: String, rank: Int?): Pair<Boolean, Boolean?> {
         val todoExists = todoExists(id)
-        val rankExists = !todoPersistence.rankExists(rank)
 
-        return Pair(todoExists, rankExists)
+        if (rank == null) {
+            return Pair(todoExists, null)
+        }
+
+        val rankIsFree = !todoPersistence.rankIsFree(rank)
+        return Pair(todoExists, rankIsFree)
+
     }
 
 
