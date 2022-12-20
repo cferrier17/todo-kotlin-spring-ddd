@@ -4,6 +4,7 @@ import java.util.*
 
 interface TodoPersistence {
     fun saveTodo(todoDomain: TodoDomain): TodoDomain
+    fun saveTodo(todoDomain: TodoDomainNullable): TodoDomain?
 
     fun getAllTodo(): List<TodoDomain>
 
@@ -15,6 +16,6 @@ interface TodoPersistence {
 
     fun todoExists(id: String) : Boolean
 
-    fun rankExists(rank: Int) : Boolean
+    fun rankIsFree(rank: Int) : Boolean
     fun deleteById(id: String)
 }

@@ -1,6 +1,7 @@
 package com.example.todokotlinspringddd.user
 
 import com.example.todokotlinspringddd.domain.TodoCreationRequest
+import com.example.todokotlinspringddd.domain.TodoPartialUpdateRequest
 import com.example.todokotlinspringddd.domain.TodoService
 import com.example.todokotlinspringddd.domain.TodoUpdateRequest
 import org.springframework.http.HttpStatus
@@ -56,14 +57,13 @@ class ApiAdapter(private val todoManagement: TodoService) {
         @PathVariable(name = "id") id: String,
         @RequestBody request: TodoUpdateRequest
     ): ResponseEntity<TodoResponse> {
-        todoManagement.fullUpdateTodo(id, request)
 
         var (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.rank)
 
         if (!todoExists) {
             return ResponseEntity.notFound().build()
         }
-        if (orderIsFree) {
+        if (orderIsFree != null && orderIsFree) {
             return ResponseEntity(null, HttpStatus.CONFLICT)
         }
 
@@ -73,23 +73,24 @@ class ApiAdapter(private val todoManagement: TodoService) {
     }
 
 
-//    @PatchMapping("{/id}")
-//    fun updateTodoPartial(@PathVariable(name = "id") id: String, @RequestBody request: TodoPartialUpdateRequest): ResponseEntity<TodoResponse> {
-//        todoManagement.fullUpdateTodo(id, request)
-//
-//        var (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.order)
-//
-//        if (!todoExists) {
-//            return ResponseEntity.notFound().build()
-//        }
-//        if (orderIsFree) {
-//            return ResponseEntity(null, HttpStatus.CONFLICT)
-//        }
-//
-//        val todo = todoManagement.fullUpdateTodo(id, request)
-//        val response = TodoResponse(todo)
-//        return ResponseEntity.ok(response)
-//    }
+    @PatchMapping("/{id}")
+    fun updateTodoPartial(@PathVariable(name = "id") id: String, @RequestBody request: TodoPartialUpdateRequest): ResponseEntity<TodoResponse> {
+
+        var (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.rank)
+
+        if (!todoExists) {
+            return ResponseEntity.notFound().build()
+        }
+        if (orderIsFree != null && orderIsFree) {
+            return ResponseEntity(null, HttpStatus.CONFLICT)
+        }
+
+        val todo = todoManagement.partialUpdateTodo(id, request) ?: return ResponseEntity.notFound().build()
+        val response = TodoResponse(todo)
+
+        return ResponseEntity.ok(response)
+
+    }
 
     @DeleteMapping("/{id}")
     fun deleteTodoById(@PathVariable(name = "id") id: String): ResponseEntity<Nothing> {
