@@ -12,8 +12,6 @@ interface TodoPersistence {
 
     fun findTodo(id: String): Optional<TodoDomain>?
 
-    fun updateTodoFull(id: String, todoDomain: TodoDomain): TodoDomain?
-
     fun todoExists(id: String) : Boolean
 
     fun rankIsFree(rank: Int) : Boolean
