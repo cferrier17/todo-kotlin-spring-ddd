@@ -5,7 +5,7 @@ import java.util.*
 class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement {
     var rank = 0
 
-    override fun saveTodo(request: TodoCreationRequest): TodoDomain {
+    override fun saveTodo(request: TodoCreationRequestDomain): TodoDomain {
         rank++
 
         return todoPersistence.saveTodo(
@@ -35,7 +35,7 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
         return todoPersistence.findTodo(id)
     }
 
-    override fun fullUpdateTodo(id: String, request: TodoUpdateRequest): TodoDomain {
+    override fun fullUpdateTodo(id: String, request: TodoFullUpdateRequestDomain): TodoDomain {
         return todoPersistence.saveTodo(
             TodoDomain(
                 id = id,
@@ -46,7 +46,7 @@ class TodoService(private val todoPersistence: TodoPersistence) : TodoManagement
         )
     }
 
-    override fun partialUpdateTodo(id: String, request: TodoPartialUpdateRequest): TodoDomain? {
+    override fun partialUpdateTodo(id: String, request: TodoPartialUpdateRequestDomain): TodoDomain? {
         return todoPersistence.saveTodo(
             TodoDomainNullable(
                 id = id,
