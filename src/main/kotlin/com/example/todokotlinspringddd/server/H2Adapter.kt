@@ -61,10 +61,6 @@ class H2Adapter(
         return repository.findById(id).map { todoJpa -> todoMapper.todoJpaToTodoDomain(todoJpa) }
     }
 
-    override fun updateTodoFull(id: String, todoDomain: TodoDomain): TodoDomain? {
-        return null
-    }
-
     override fun todoExists(id: String): Boolean {
         return repository.existsById(id)
     }

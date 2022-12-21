@@ -58,7 +58,7 @@ class ApiAdapter(private val todoManagement: TodoService) {
         @RequestBody request: TodoUpdateRequest
     ): ResponseEntity<TodoResponse> {
 
-        var (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.rank)
+        val (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.rank)
 
         if (!todoExists) {
             return ResponseEntity.notFound().build()
@@ -74,9 +74,12 @@ class ApiAdapter(private val todoManagement: TodoService) {
 
 
     @PatchMapping("/{id}")
-    fun updateTodoPartial(@PathVariable(name = "id") id: String, @RequestBody request: TodoPartialUpdateRequest): ResponseEntity<TodoResponse> {
+    fun updateTodoPartial(
+        @PathVariable(name = "id") id: String,
+        @RequestBody request: TodoPartialUpdateRequest
+    ): ResponseEntity<TodoResponse> {
 
-        var (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.rank)
+        val (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.rank)
 
         if (!todoExists) {
             return ResponseEntity.notFound().build()
