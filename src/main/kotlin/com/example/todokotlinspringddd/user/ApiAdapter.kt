@@ -1,9 +1,6 @@
 package com.example.todokotlinspringddd.user
 
-import com.example.todokotlinspringddd.domain.TodoCreationRequest
-import com.example.todokotlinspringddd.domain.TodoPartialUpdateRequest
 import com.example.todokotlinspringddd.domain.TodoService
-import com.example.todokotlinspringddd.domain.TodoUpdateRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -11,11 +8,12 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/todos")
-class ApiAdapter(private val todoManagement: TodoService) {
+class ApiAdapter(private val todoManagement: TodoService, private val mapper: RequestMapper) {
 
     @PostMapping
-    fun createTodo(@RequestBody request: TodoCreationRequest): ResponseEntity<*> {
-        val todo = todoManagement.saveTodo(request)
+    fun createTodo(@RequestBody requestApi: TodoCreationRequestApi): ResponseEntity<*> {
+        val requestDomain = mapper.creationRequestApiToDomain(requestApi)
+        val todo = todoManagement.saveTodo(requestDomain)
 
         val todoResponse = TodoResponse(todo)
         return ResponseEntity(todoResponse, HttpStatus.CREATED)
@@ -55,10 +53,10 @@ class ApiAdapter(private val todoManagement: TodoService) {
     @PutMapping("/{id}")
     fun updateTodoFull(
         @PathVariable(name = "id") id: String,
-        @RequestBody request: TodoUpdateRequest
+        @RequestBody requestApi: TodoFullUpdateRequestApi
     ): ResponseEntity<TodoResponse> {
 
-        val (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.rank)
+        val (todoExists, orderIsFree) = todoManagement.isUpdatable(id, requestApi.rank)
 
         if (!todoExists) {
             return ResponseEntity.notFound().build()
@@ -67,7 +65,8 @@ class ApiAdapter(private val todoManagement: TodoService) {
             return ResponseEntity(null, HttpStatus.CONFLICT)
         }
 
-        val todo = todoManagement.fullUpdateTodo(id, request)
+        val requestDomain = mapper.fullUpdateRequestApiToDomain(requestApi)
+        val todo = todoManagement.fullUpdateTodo(id, requestDomain)
         val response = TodoResponse(todo)
         return ResponseEntity.ok(response)
     }
@@ -76,10 +75,10 @@ class ApiAdapter(private val todoManagement: TodoService) {
     @PatchMapping("/{id}")
     fun updateTodoPartial(
         @PathVariable(name = "id") id: String,
-        @RequestBody request: TodoPartialUpdateRequest
+        @RequestBody requestApi: TodoPartialUpdateRequestApi
     ): ResponseEntity<TodoResponse> {
 
-        val (todoExists, orderIsFree) = todoManagement.isUpdatable(id, request.rank)
+        val (todoExists, orderIsFree) = todoManagement.isUpdatable(id, requestApi.rank)
 
         if (!todoExists) {
             return ResponseEntity.notFound().build()
@@ -88,7 +87,9 @@ class ApiAdapter(private val todoManagement: TodoService) {
             return ResponseEntity(null, HttpStatus.CONFLICT)
         }
 
-        val todo = todoManagement.partialUpdateTodo(id, request) ?: return ResponseEntity.notFound().build()
+
+        val requestDomain = mapper.partialUpdateRequestApiToDomain(requestApi)
+        val todo = todoManagement.partialUpdateTodo(id, requestDomain) ?: return ResponseEntity.notFound().build()
         val response = TodoResponse(todo)
 
         return ResponseEntity.ok(response)

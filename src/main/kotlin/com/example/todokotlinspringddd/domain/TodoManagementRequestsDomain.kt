@@ -1,20 +1,17 @@
 package com.example.todokotlinspringddd.domain
 
-import com.fasterxml.jackson.annotation.JsonProperty
 
-
-class TodoCreationRequest(
-    @JsonProperty("title")
+class TodoCreationRequestDomain(
     var title: String
 )
 
-class TodoUpdateRequest(
+class TodoFullUpdateRequestDomain(
     var title: String,
     var completed: Boolean,
     var rank: Int
 )
 
-class TodoPartialUpdateRequest(
+class TodoPartialUpdateRequestDomain(
     var title: String?,
     var completed: Boolean?,
     var rank: Int?
