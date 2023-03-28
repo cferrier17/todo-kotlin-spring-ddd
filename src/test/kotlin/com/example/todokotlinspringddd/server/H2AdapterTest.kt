@@ -8,9 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import java.util.*
 
-@SpringBootTest
+@SpringBootTest //todo : test intégration uniquement
 class H2AdapterTest @Autowired constructor(
-    var repository: TodoJpaRepository,
+    var repository: TodoJpaRepository, //todo : à mocker, à tester avec verify
     var todoMapper: TodoMapper,
     var h2Adapater: H2Adapter
 ) {
